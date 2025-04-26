@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuest: Algoritmos y Estructuras de Datos con Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos CSS Internos */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8; /* Azul muy claro */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Contiene los floats */
+        }
+
+        header {
+            background-color: #4a90e2; /* Azul primario */
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        /* Estilos para la navegación por pestañas */
+        .tab-navigation {
+            display: flex;
+            flex-wrap: wrap; /* Permite que las pestañas pasen a la siguiente línea en pantallas pequeñas */
+            background-color: #e1e8f0; /* Azul claro grisáceo */
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .tab-button {
+            flex-grow: 1; /* Hace que los botones ocupen el espacio disponible */
+            padding: 12px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #4a5568; /* Gris oscuro */
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 5px; /* Espacio entre botones */
+            min-width: 100px; /* Ancho mínimo para evitar que se aplasten demasiado */
+        }
+
+        .tab-button:hover {
+            background-color: #cad5e0; /* Azul más claro al pasar el ratón */
+            color: #2c5282; /* Azul oscuro */
+        }
+
+        .tab-button.active {
+            background-color: #4a90e2; /* Azul primario */
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            border: 1px solid #d1d9e6; /* Borde sutil */
+            border-radius: 0 0 8px 8px;
+            background-color: #f8fafc; /* Fondo ligeramente diferente para el contenido */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Estilos generales para secciones */
+        h2 {
+            color: #2c5282; /* Azul oscuro */
+            border-bottom: 2px solid #4a90e2; /* Línea azul */
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: #3674c0; /* Azul medio */
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        p, li {
+            margin-bottom: 12px;
+            color: #4a5568; /* Gris oscuro */
+            font-size: 1em;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #2d3748; /* Gris muy oscuro */
+        }
+
+        /* Estilos para tarjetas (roles, recursos) */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño de cuadrícula responsivo */
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .card h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #4a90e2; /* Azul primario */
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.95em;
+            color: #5a677b;
+            margin-bottom: 0;
+        }
+
+        .card a {
+            color: #3182ce; /* Azul enlace */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .card a:hover {
+            color: #2c5282; /* Azul oscuro */
+            text-decoration: underline;
+        }
+
+        /* Estilos para la tabla de evaluación (Rúbrica) */
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Para que el borde redondeado afecte a la tabla */
+        }
+
+        .rubric-table th, .rubric-table td {
+            border: 1px solid #d1d9e6; /* Borde gris claro */
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        .rubric-table th {
+            background-color: #e1e8f0; /* Azul claro grisáceo */
+            color: #2c5282; /* Azul oscuro */
+            font-weight: 600;
+        }
+
+        .rubric-table td {
+            background-color: #ffffff;
+            vertical-align: top;
+        }
+
+        .rubric-table tbody tr:nth-child(even) td {
+            background-color: #f8fafc; /* Fondo alterno muy sutil */
+        }
+
+        .rubric-table th:first-child {
+            width: 20%; /* Ancho para la columna de criterios */
+        }
+
+        /* Estilos para el Quiz Interactivo */
+        .quiz-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #eef2f7; /* Fondo ligeramente diferente para secciones del quiz */
+            border-radius: 8px;
+            border: 1px solid #d1d9e6;
+        }
+
+        .quiz-section h4 {
+            margin-top: 0;
+            color: #3674c0; /* Azul medio */
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #c5d0de;
+        }
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question p {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #dce4ec;
+        }
+
+        .options input[type="radio"], .options input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: none; /* Oculto por defecto */
+        }
+
+        .feedback.correct {
+            background-color: #c6f6d5; /* Verde claro */
+            color: #2f855a; /* Verde oscuro */
+            border: 1px solid #9ae6b4;
+        }
+
+        .feedback.incorrect {
+            background-color: #fed7d7; /* Rojo claro */
+            color: #c53030; /* Rojo oscuro */
+            border: 1px solid #feb2b2;
+        }
+
+        .quiz-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4a90e2; /* Azul primario */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .quiz-button:hover {
+            background-color: #3674c0; /* Azul medio */
+            transform: translateY(-2px);
+        }
+         .quiz-button:active {
+            transform: translateY(0);
+        }
+
+        /* Estilos para Arrastrar y Soltar (Drag and Drop) */
+        .drag-drop-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            flex-wrap: wrap; /* Para pantallas pequeñas */
+        }
+        .draggable-items, .drop-zones {
+            border: 2px dashed #a0aec0; /* Borde gris */
+            padding: 15px;
+            min-height: 100px;
+            width: 48%;
+            border-radius: 8px;
+            margin-bottom: 10px; /* Espacio en pantallas pequeñas */
+        }
+         .draggable-items h5, .drop-zones h5 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #4a5568;
+        }
+        .draggable {
+            background-color: #bee3f8; /* Azul muy claro */
+            color: #2c5282; /* Azul oscuro */
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: grab;
+            text-align: center;
+            border: 1px solid #90cdf4;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .drop-zone {
+            background-color: #f0f4f8; /* Fondo de zona */
+            border: 1px solid #cbd5e0;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            min-height: 40px; /* Altura mínima para soltar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096; /* Color de texto placeholder */
+        }
+        .drop-zone.over {
+            background-color: #e2e8f0; /* Cambio al pasar por encima */
+            border-style: solid;
+        }
+        .drop-zone .draggable { /* Estilo del elemento arrastrado dentro de la zona */
+             cursor: default;
+             margin-bottom: 0;
+        }
+
+        /* Estilos para Relacionar Columnas */
+        .matching-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            flex-wrap: wrap; /* Responsividad */
+        }
+        .column {
+            width: 48%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+             margin-bottom: 10px; /* Espacio en pantallas pequeñas */
+        }
+         .column h5 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #4a5568;
+        }
+        .match-item {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .match-item:hover {
+            background-color: #ebf8ff; /* Azul muy muy claro */
+             border-color: #90cdf4;
+        }
+        .match-item.selected {
+            background-color: #bee3f8; /* Azul claro */
+            border-color: #4a90e2; /* Azul primario */
+            font-weight: 600;
+        }
+
+        /* Estilos para el Iframe de Educaplay */
+        .educaplay-container {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #eef2f7;
+            border-radius: 8px;
+            border: 1px solid #d1d9e6;
+            text-align: center; /* Centra el iframe si es posible */
+        }
+        .educaplay-container iframe {
+            max-width: 100%; /* Asegura que el iframe sea responsive */
+            border: none; /* Quita el borde por defecto */
+            border-radius: 8px; /* Bordes redondeados para el iframe */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            font-size: 0.9em;
+            color: #718096; /* Gris medio */
+        }
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            header h1 {
+                font-size: 1.8em;
+            }
+            .tab-button {
+                font-size: 0.9em;
+                padding: 10px 8px;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            h3 {
+                font-size: 1.3em;
+            }
+            .card-container {
+                grid-template-columns: 1fr; /* Una columna en móviles */
+            }
+            .rubric-table th, .rubric-table td {
+                font-size: 0.9em;
+                padding: 8px 10px;
+            }
+            .drag-drop-container, .matching-container {
+                flex-direction: column; /* Apila las columnas en móviles */
+            }
+            .draggable-items, .drop-zones, .column {
+                width: 100%; /* Ocupa todo el ancho */
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+             header h1 {
+                font-size: 1.5em;
+            }
+            .tab-navigation {
+                 padding: 3px;
+            }
+            .tab-button {
+                font-size: 0.85em;
+                padding: 8px 5px;
+                min-width: 80px; /* Ajuste para móviles */
+                margin: 3px;
+            }
+             h2 {
+                font-size: 1.4em;
+            }
+            h3 {
+                font-size: 1.2em;
+            }
+             p, li, .rubric-table th, .rubric-table td, .quiz-section {
+                 font-size: 0.9em;
+             }
+             .quiz-button {
+                 padding: 8px 16px;
+                 font-size: 0.9em;
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>WebQuest: Algoritmos y Estructuras de Datos con Python</h1>
+            <p>Una aventura para organizar el mundo digital - 5° Año Secundaria</p>
+        </header>
+
+        <nav class="tab-navigation">
+            <button class="tab-button active" onclick="showTab('introduccion')">Introducción</button>
+            <button class="tab-button" onclick="showTab('tarea')">Tarea</button>
+            <button class="tab-button" onclick="showTab('proceso')">Proceso</button>
+            <button class="tab-button" onclick="showTab('recursos')">Recursos</button>
+            <button class="tab-button" onclick="showTab('evaluacion')">Evaluación</button>
+            <button class="tab-button" onclick="showTab('conclusion')">Conclusión</button>
+            <button class="tab-button" onclick="showTab('quiz')">Quiz Interactivo</button>
+        </nav>
+
+        <main>
+            <section id="introduccion" class="tab-content active">
+                <h2>¡Bienvenida/o al Desafío Algorítmico!</h2>
+                <h3>El Problema: ¡Caos Musical!</h3>
+                <p>Imagina que eres un apasionado de la música y tu colección digital ha crecido tanto que encontrar una canción específica o crear una playlist temática se ha vuelto una misión imposible. Tienes miles de archivos MP3, listas de reproducción desordenadas y ninguna forma eficiente de buscar por artista, género o año. ¿Cómo podrías usar la lógica y la programación para poner orden en este caos y acceder a tu música favorita al instante?</p>
+                <p>Este escenario, aunque centrado en la música, refleja un problema muy común en el mundo digital: la necesidad de <strong>organizar y procesar grandes cantidades de información</strong> de manera rápida y efectiva. Desde cómo Google encuentra la página web que buscas hasta cómo Netflix te recomienda series, todo se basa en los conceptos que exploraremos.</p>
+
+                <h3>Conexión Curricular</h3>
+                <p>Lo que aprenderás aquí se conecta directamente con:</p>
+                <ul>
+                    <li><strong>Matemática:</strong> Lógica, secuencias, eficiencia de procesos.</li>
+                    <li><strong>Lengua y Literatura:</strong> Estructuración de la información, claridad en la descripción de procesos.</li>
+                    <li><strong>Tecnología/Informática:</strong> Fundamentos de la programación, pensamiento computacional, bases de datos (a futuro).</li>
+                </ul>
+
+                <h3>Pregunta Guía</h3>
+                <p style="font-size: 1.1em; font-style: italic; text-align: center; color: #3674c0; margin-top: 20px;">
+                    <strong>¿Cómo podemos diseñar "recetas" lógicas (algoritmos) y "contenedores" inteligentes (estructuras de datos) en Python para resolver problemas complejos de organización, búsqueda y manipulación de información en el mundo real?</strong>
+                </p>
+
+                <h3>Objetivos de Aprendizaje (SMART)</h3>
+                <p>Al finalizar esta WebQuest, serás capaz de:</p>
+                <ol>
+                    <li><strong>Definir</strong> qué es un algoritmo, identificar sus características (finitud, precisión, entrada, salida, efectividad) y representarlo mediante pseudocódigo o diagramas de flujo simples. (Competencia: <strong>Pensamiento Computacional</strong>).</li>
+                    <li><strong>Identificar y diferenciar</strong> estructuras de datos fundamentales en Python como listas, arreglos (conceptualmente), conjuntos y diccionarios, explicando cuándo es apropiado usar cada una. (Competencia: <strong>Análisis de Datos</strong>).</li>
+                    <li><strong>Implementar</strong> algoritmos básicos de búsqueda (lineal) y ordenamiento (burbuja o selección, conceptualmente) sobre listas en Python. (Competencia: <strong>Resolución de Problemas</strong>).</li>
+                    <li><strong>Analizar</strong> la eficiencia de algoritmos muy simples (en términos intuitivos de pasos) para resolver un problema dado. (Competencia: <strong>Pensamiento Crítico</strong>).</li>
+                    <li><strong>Colaborar</strong> eficazmente en equipo para diseñar, implementar y presentar una solución a un problema propuesto, utilizando herramientas digitales. (Competencia: <strong>Trabajo Colaborativo y Comunicación Digital</strong>).</li>
+                </ol>
+            </section>
+
+            <section id="tarea" class="tab-content">
+                <h2>Tu Misión: Crear un Organizador Digital</h2>
+                <h3>Producto Final Detallado (Formato Digital)</h3>
+                <p>En equipos, deberán diseñar y presentar un <strong>Informe Interactivo Digital</strong> (puede ser una página web simple creada con HTML/CSS básico, una presentación multimedia enriquecida tipo Genially/Canva, o un documento interactivo) que aborde el problema inicial del "Caos Musical" (o un problema similar que elijan y apruebe el docente).</p>
+                <p>Este informe debe incluir:</p>
+                <ul>
+                    <li><strong>Introducción:</strong> Descripción clara del problema elegido y por qué es relevante.</li>
+                    <li><strong>Conceptos Clave:</strong> Explicación concisa de los algoritmos y estructuras de datos que eligieron para solucionar el problema (ej. búsqueda lineal, listas de Python).</li>
+                    <li><strong>Propuesta de Solución:</strong> Descripción del algoritmo diseñado (puede ser en pseudocódigo o diagrama).</li>
+                    <li><strong>Implementación en Python:</strong> Un fragmento de código Python funcional (bien comentado) que implemente una parte clave de su solución (ej. una función que busca canciones por artista en una lista).</li>
+                    <li><strong>Ejemplo de Aplicación:</strong> Una demostración simple de cómo funcionaría su solución con datos de ejemplo.</li>
+                    <li><strong>Conclusiones:</strong> Reflexión sobre las ventajas y limitaciones de su enfoque y lo aprendido.</li>
+                    <li><strong>Referencias:</strong> Citación adecuada de los recursos utilizados.</li>
+                </ul>
+
+                <h3>Roles Colaborativos Específicos (Equipos de 4)</h3>
+                <div class="card-container">
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search inline-block mr-1" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg> Investigador/a Conceptual</h4>
+                        <p>Responsable de investigar a fondo los conceptos de algoritmos y estructuras de datos relevantes para el problema. Asegura la precisión teórica del informe.</p>
+                    </div>
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-slash inline-block mr-1" viewBox="0 0 16 16"><path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/></svg> Programador/a Python</h4>
+                        <p>Encargado/a de traducir el algoritmo diseñado a código Python funcional y bien comentado. Realiza pruebas básicas para asegurar que el código funcione.</p>
+                    </div>
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-palette-fill inline-block mr-1" viewBox="0 0 16 16"><path d="M12.433 10.07C14.133 10.585 16 11.15 16 8a8 8 0 1 0-16 0c0 1.99 1.007 3.086 1.798 3.599l.19.117c.355.217.716.394 1.098.557l.18.081c.417.187.85.332 1.317.431l.174.038a6.6 6.6 0 0 1 .68.06c.28.02.57.027.87.027s.59-.007.87-.027a6.6 6.6 0 0 1 .68-.06l.174-.038c.467-.1.899-.244 1.317-.431l.18-.081c.382-.163.743-.34 1.098-.557zM8 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m4.5-1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0M5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/></svg> Diseñador/a de Presentación</h4>
+                        <p>Responsable del diseño visual y la usabilidad del informe interactivo. Se asegura de que sea claro, atractivo y fácil de navegar.</p>
+                    </div>
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill inline-block mr-1" viewBox="0 0 16 16"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/></svg> Documentador/a Técnico</h4>
+                        <p>Encargado/a de redactar las explicaciones, la descripción del algoritmo, las conclusiones y de asegurar la coherencia general y la correcta citación de fuentes.</p>
+                    </div>
+                </div>
+
+                <h3>Criterios de Éxito Claros</h3>
+                <p>El informe final será evaluado considerando:</p>
+                <ul>
+                    <li><strong>Claridad y Relevancia:</strong> ¿El problema está bien definido y la solución propuesta es pertinente?</li>
+                    <li><strong>Precisión Conceptual:</strong> ¿Se explican correctamente los algoritmos y estructuras de datos utilizados?</li>
+                    <li><strong>Funcionalidad del Código:</strong> ¿El fragmento de Python es correcto, está bien comentado y cumple su función?</li>
+                    <li><strong>Diseño y Usabilidad:</strong> ¿El informe es visualmente atractivo, organizado y fácil de entender/navegar?</li>
+                    <li><strong>Colaboración y Presentación:</strong> ¿Se evidencia el trabajo en equipo y la presentación es clara? (Se evaluará también con la rúbrica detallada).</li>
+                    <li><strong>Citación Adecuada:</strong> ¿Se citan correctamente todas las fuentes de información utilizadas?</li>
+                </ul>
+            </section>
+
+            <section id="proceso" class="tab-content">
+                <h2>Pasos para el Éxito: ¡Manos a la Obra!</h2>
+                <p>Sigan estos pasos para completar su misión. ¡La organización y la comunicación son clave!</p>
+                <ol>
+                    <li>
+                        <strong>Semana 1: Formación y Exploración (Aprox. 2 clases)</strong>
+                        <ul>
+                            <li>Formen equipos de 4 integrantes.</li>
+                            <li>Lean juntos la Introducción y la Tarea. Discutan el problema inicial o propongan uno alternativo (consultar con el docente).</li>
+                            <li>Asignen los roles dentro del equipo.</li>
+                            <li><strong>Actividad Colaborativa:</strong> Brainstorming inicial sobre posibles soluciones. Cada miembro investiga preliminarmente desde la perspectiva de su rol.</li>
+                            <li>Empiecen a explorar los Recursos proporcionados.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Semana 2: Investigación y Diseño (Aprox. 3 clases)</strong>
+                        <ul>
+                            <li>El/La Investigador/a profundiza en los conceptos teóricos necesarios.</li>
+                            <li>El equipo discute y define qué algoritmo(s) y estructura(s) de datos son los más adecuados para su problema.</li>
+                            <li><strong>Actividad Colaborativa:</strong> Diseño conjunto del algoritmo (pseudocódigo o diagrama). Todos aportan y validan la lógica.</li>
+                            <li>El/La Documentador/a empieza a redactar la introducción y la explicación de conceptos.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Semana 3: Implementación y Desarrollo (Aprox. 3 clases)</strong>
+                        <ul>
+                            <li>El/La Programador/a implementa el fragmento de código Python clave.</li>
+                            <li>El/La Diseñador/a comienza a estructurar y diseñar el informe interactivo (eligiendo la herramienta: HTML/CSS, Genially, Canva, etc.).</li>
+                            <li>El/La Documentador/a continúa redactando, integrando el pseudocódigo/diagrama.</li>
+                            <li><strong>Actividad Colaborativa:</strong> El/La Programador/a comparte el código para revisión por pares (todos intentan entenderlo y sugieren mejoras).</li>
+                        </ul>
+                    </li>
+                     <li>
+                        <strong>Semana 4: Integración y Refinamiento (Aprox. 2 clases)</strong>
+                        <ul>
+                            <li>Integren todo el contenido en el formato elegido por el/la Diseñador/a (texto, código, ejemplos).</li>
+                             <li>El/La Documentador/a escribe las conclusiones y revisa la citación.</li>
+                            <li><strong>Actividad Colaborativa:</strong> Revisión general del informe por todo el equipo. Verificar que se cumplan los Criterios de Éxito. Realizar ajustes finales.</li>
+                            <li>Preparen una breve presentación oral (opcional, según indique el docente).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Fecha Límite: Entrega Final</strong>
+                        <ul>
+                            <li>Entreguen el enlace o archivo del Informe Interactivo Digital según las indicaciones del docente.</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Herramientas Sugeridas (Web 2.0 / IA)</h3>
+                 <div class="card-container">
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google inline-block mr-1" viewBox="0 0 16 16"><path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"/></svg> Colaboración</h4>
+                        <p><a href="https://docs.google.com/" target="_blank">Google Docs/Slides</a>: Para escribir y editar documentos o presentaciones en tiempo real.</p>
+                    </div>
+                     <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3 inline-block mr-1" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5zM3 11.5A1.5 1.5 0 0 1 4.5 10h1A1.5 1.5 0 0 1 7 11.5v1A1.5 1.5 0 0 1 5.5 14h-1A1.5 1.5 0 0 1 3 12.5zm1.5.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5zm4.5 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 9 12.5zm1.5.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5z"/></svg> Diagramas</h4>
+                        <p><a href="https://app.diagrams.net/" target="_blank">draw.io</a> o <a href="https://www.lucidchart.com/pages/es" target="_blank">Lucidchart</a>: Para crear diagramas de flujo o mapas conceptuales.</p>
+                    </div>
+                     <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn inline-block mr-1" viewBox="0 0 16 16"><path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/></svg> Visualización Python</h4>
+                        <p><a href="https://pythontutor.com/" target="_blank">Python Tutor</a>: Para visualizar paso a paso cómo se ejecuta su código Python.</p>
+                    </div>
+                    <div class="card">
+                       <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image inline-block mr-1" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/></svg> Generación de Imágenes (Opcional)</h4>
+                       <p>Herramientas como <a href="https://copilot.microsoft.com/" target="_blank">Microsoft Copilot</a> (Diseñador) o <a href="https://www.canva.com/ai-image-generator/" target="_blank">Canva AI</a> pueden ayudar a crear ilustraciones para su informe (usar con moderación y citar).</p>
+                   </div>
+                </div>
+            </section>
+
+            <section id="recursos" class="tab-content">
+                <h2>Explora y Aprende: Tus Fuentes de Información</h2>
+                <p>Aquí tienes algunos recursos seleccionados para ayudarte en tu investigación. ¡No dudes en buscar más si lo necesitas!</p>
+                <div class="card-container">
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube inline-block mr-1" viewBox="0 0 16 16"><path d="M8.051 1.999a.6.6 0 0 1 .59.026l6.57 4.027a.6.6 0 0 1 0 1.008l-6.57 4.027a.6.6 0 0 1-.88-.504V2.503a.6.6 0 0 1 .29-.504z"/><path d="M14.71 5.037a1.7 1.7 0 0 0-.98-.655c-1.45-.37-7.17-.37-7.17 0a1.7 1.7 0 0 0-.98.655c-.27.48-.39 1.5-.39 2.963s.12 2.483.39 2.963a1.7 1.7 0 0 0 .98.655C4.14 11.99 10.86 11.99 10.86 11.99s5.72 0 7.17-.37a1.7 1.7 0 0 0 .98-.655c.27-.48.39-1.5.39-2.963s-.12-2.483-.39-2.963M15 8a7 7 0 1 1-14 0 7 7 0 0 1 14 0"/></svg> ¿Qué es un Algoritmo? (Video)</h4>
+                        <p><strong>Descripción:</strong> Video corto y claro que explica el concepto fundamental de algoritmo con ejemplos sencillos.</p>
+                        <p><a href="https://www.youtube.com/watch?v=U3CGMyfc3wA" target="_blank">Ver Video (EDteam)</a></p>
+                        <p><small><em>Citación: EDteam (s.f.). ¿Qué es un Algoritmo? [Archivo de vídeo]. YouTube.</em></small></p>
+                    </div>
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text inline-block mr-1" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg> Estructuras de Datos en Python (Artículo)</h4>
+                        <p><strong>Descripción:</strong> Artículo que introduce las estructuras de datos más comunes en Python (listas, tuplas, diccionarios, conjuntos) con ejemplos de código.</p>
+                        <p><a href="https://www.freecodecamp.org/espanol/news/estructuras-de-datos-en-python/" target="_blank">Leer Artículo (freeCodeCamp)</a></p>
+                        <p><small><em>Citación: freeCodeCamp (2023). Estructuras de Datos en Python – Listas, Tuplas, Diccionarios y Sets Explicados.</em></small></p>
+                    </div>
+                     <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-code inline-block mr-1" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.646 5.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 8 8.646 6.354a.5.5 0 0 1 0-.708m-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 8l1.647-1.646a.5.5 0 0 0 0-.708"/> M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/><path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/></svg> Algoritmos de Búsqueda (Artículo/Tutorial)</h4>
+                        <p><strong>Descripción:</strong> Explica cómo funciona la búsqueda lineal y (opcionalmente) la búsqueda binaria, con ejemplos en Python.</p>
+                        <p><a href="https://realpython.com/linear-search-python/" target="_blank">Leer Tutorial (Real Python - en inglés, usar traductor si es necesario)</a></p>
+                         <p><small><em>Citación: Real Python (s.f.). Python Linear Search: A Simple Sequential Algorithm.</em></small></p>
+                    </div>
+                    <div class="card">
+                        <h4><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book inline-block mr-1" viewBox="0 0 16 16"><path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.823c-.942-.35-2.12-.43-3.287-.81-1.094-.38-2.278-.487-3.112-.493v-9.746zM8 1.783C7.015 1.103 5.786.86 4.5 1.007c-1.246.147-2.504.556-3.4 1.004v9.652c1.057-.472 2.356-.743 3.58-.639 1.218.104 2.387.483 3.42 1.098zM15 2.011c-.896-.448-2.154-.857-3.4-.994-1.286-.146-2.515.09-3.428.77v9.652c1.03-.614 2.208-.993 3.428-1.097 1.224-.103 2.523.17 3.58.639z"/></svg> Documentación Oficial de Python (Referencia)</h4>
+                        <p><strong>Descripción:</strong> La fuente oficial para consultar sobre estructuras de datos (listas, diccionarios, etc.) y funciones integradas en Python.</p>
+                        <p><a href="https://docs.python.org/es/3/tutorial/datastructures.html" target="_blank">Ver Documentación (Python Software Foundation)</a></p>
+                        <p><small><em>Citación: Python Software Foundation (s.f.). Python 3 Documentation: Data Structures.</em></small></p>
+                    </div>
+                </div>
+                 <p style="margin-top: 20px;"><strong>Nota:</strong> Recuerden evaluar críticamente la información encontrada y citar siempre sus fuentes.</p>
+            </section>
+
+            <section id="evaluacion" class="tab-content">
+                <h2>¿Cómo se Evaluará tu Trabajo?</h2>
+                <p>Tu desempeño y el de tu equipo se valorarán utilizando la siguiente rúbrica analítica. ¡Presta atención a los criterios para alcanzar la excelencia!</p>
+
+                <div style="overflow-x: auto;"> <table class="rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criterio</th>
+                                <th>Excelente (4 pts)</th>
+                                <th>Bueno (3 pts)</th>
+                                <th>Suficiente (2 pts)</th>
+                                <th>Insuficiente (1 pt)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Contextualización del Problema</strong></td>
+                                <td>Describe el problema elegido con gran claridad, relevancia y detalle, justificando convincentemente la necesidad de una solución algorítmica.</td>
+                                <td>Describe el problema elegido de forma clara y relevante, explicando la necesidad de una solución algorítmica.</td>
+                                <td>Describe el problema elegido de forma básica, mencionando la necesidad de una solución, pero con poca profundidad o relevancia.</td>
+                                <td>La descripción del problema es vaga, irrelevante o inexistente. No se justifica la necesidad de la solución.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Precisión Conceptual</strong></td>
+                                <td>Explica los algoritmos y estructuras de datos seleccionados con total precisión, usando terminología correcta y demostrando una comprensión profunda de su funcionamiento y aplicabilidad.</td>
+                                <td>Explica los algoritmos y estructuras de datos seleccionados correctamente, usando terminología adecuada y demostrando buena comprensión.</td>
+                                <td>Explica los algoritmos y estructuras de datos con algunas imprecisiones o de forma superficial. La terminología puede ser inconsistente.</td>
+                                <td>La explicación de los conceptos es incorrecta, muy confusa o ausente.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Colaboración Efectiva y Roles</strong></td>
+                                <td>Se evidencia una excelente colaboración, comunicación fluida y clara distribución de tareas según los roles. Todos los miembros contribuyeron significativamente.</td>
+                                <td>Se evidencia buena colaboración y comunicación. La distribución de tareas es adecuada y la mayoría de los miembros contribuyeron.</td>
+                                <td>La colaboración es aceptable, pero con comunicación limitada o desequilibrio en la contribución de los miembros. Los roles no están claramente definidos o seguidos.</td>
+                                <td>No hay evidencia de colaboración efectiva. El trabajo parece individual o desorganizado. Los roles son ignorados.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Diseño Visual y Usabilidad (Informe Digital)</strong></td>
+                                <td>El informe es excepcionalmente atractivo, organizado, fácil de navegar y utiliza elementos visuales de forma muy efectiva para comunicar la información. Totalmente responsive.</td>
+                                <td>El informe es atractivo, bien organizado y fácil de seguir. Utiliza elementos visuales adecuadamente. Mayormente responsive.</td>
+                                <td>El informe tiene una organización básica y es mínimamente atractivo. La navegación puede ser algo confusa. Algunos problemas de responsividad.</td>
+                                <td>El informe es desorganizado, poco atractivo, difícil de navegar o no funciona correctamente en diferentes dispositivos.</td>
+                            </tr>
+                             <tr>
+                                <td><strong>5. Implementación Python y Aplicación</strong></td>
+                                <td>El código Python es correcto, eficiente para el nivel esperado, excelentemente comentado y resuelve la parte clave del problema. El ejemplo de aplicación es claro y relevante.</td>
+                                <td>El código Python es funcional, adecuadamente comentado y resuelve parte del problema. El ejemplo de aplicación es comprensible.</td>
+                                <td>El código Python tiene errores menores o es difícil de entender (poco comentado). El ejemplo de aplicación es básico o poco claro.</td>
+                                <td>El código Python no funciona, es irrelevante para el problema o está ausente. El ejemplo de aplicación falta o es incorrecto.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>6. Citación Adecuada</strong></td>
+                                <td>Todas las fuentes (texto, imágenes, código) están meticulosamente citadas en un formato consistente y adecuado.</td>
+                                <td>La mayoría de las fuentes están citadas correctamente en un formato adecuado.</td>
+                                <td>Algunas fuentes están citadas, pero con inconsistencias en el formato o faltan algunas citas importantes.</td>
+                                <td>Las fuentes no están citadas o la citación es muy deficiente.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="conclusion" class="tab-content">
+                <h2>Reflexionando Sobre el Viaje Algorítmico</h2>
+                <p>¡Felicitaciones por completar esta WebQuest! Han dado sus primeros pasos en el fascinante mundo de los algoritmos y las estructuras de datos.</p>
+                <p>Ahora, tómense un momento en equipo para reflexionar sobre su experiencia. Discutan las siguientes preguntas:</p>
+                <ul>
+                    <li>¿Cuál fue el aspecto más desafiante al intentar traducir un problema del mundo real (como organizar música) en una serie de pasos lógicos (un algoritmo)?</li>
+                    <li>¿Cómo cambió su forma de pensar sobre la organización de la información después de trabajar con estructuras de datos como listas o diccionarios?</li>
+                    <li>¿En qué otras situaciones de su vida cotidiana (aparte de la música o las búsquedas web) creen que se aplican principios algorítmicos sin que nos demos cuenta? (Ej: seguir una receta, planificar una ruta, reglas de un juego).</li>
+                    <li>¿Qué implicaciones creen que tiene la eficiencia de los algoritmos y la elección de estructuras de datos en el rendimiento de las aplicaciones y sitios web que usan a diario?</li>
+                    <li>¿Qué habilidad nueva (técnica o de colaboración) sienten que desarrollaron o mejoraron durante este proyecto?</li>
+                    <li>Si tuvieran que hacer este proyecto de nuevo, ¿qué harían diferente?</li>
+                </ul>
+                <p>Comprender estos conceptos fundamentales es esencial no solo para la informática, sino para desarrollar un <strong>pensamiento estructurado y lógico</strong> que les será útil en muchas otras áreas de estudio y en su vida futura.</p>
+                <p>¡Sigan explorando, programando y resolviendo problemas!</p>
+            </section>
+
+            <section id="quiz" class="tab-content">
+                <h2>Pon a Prueba tus Conocimientos</h2>
+                <p>¡Es hora de comprobar lo que has aprendido! Responde las siguientes preguntas.</p>
+
+                <div class="quiz-section">
+                    <h4>1. Selección Múltiple</h4>
+                    <div class="question" id="mcq1">
+                        <p>1. ¿Qué es un algoritmo?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1" value="a"> a) Un lenguaje de programación como Python.</label>
+                            <label><input type="radio" name="q1" value="b"> b) Una estructura para almacenar datos.</label>
+                            <label><input type="radio" name="q1" value="c"> c) Una secuencia finita y ordenada de pasos para resolver un problema.</label>
+                            <label><input type="radio" name="q1" value="d"> d) El resultado final de un programa.</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkMCQ('q1', 'c', 'mcq1_feedback', '¡Correcto! Un algoritmo es una receta precisa para solucionar un problema.', 'Incorrecto. Recuerda que un algoritmo es una serie de pasos.')">Verificar</button>
+                        <div class="feedback" id="mcq1_feedback"></div>
+                    </div>
+                    <div class="question" id="mcq2">
+                        <p>2. ¿Cuál de estas NO es una característica esencial de un algoritmo?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2" value="a"> a) Finitud (debe terminar).</label>
+                            <label><input type="radio" name="q2" value="b"> b) Precisión (pasos claros).</label>
+                            <label><input type="radio" name="q2" value="c"> c) Complejidad (debe ser difícil).</label>
+                            <label><input type="radio" name="q2" value="d"> d) Efectividad (pasos realizables).</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkMCQ('q2', 'c', 'mcq2_feedback', '¡Correcto! Los algoritmos buscan ser eficientes, no necesariamente complejos.', 'Incorrecto. La complejidad no es un requisito, ¡la claridad sí!')">Verificar</button>
+                        <div class="feedback" id="mcq2_feedback"></div>
+                    </div>
+                     <div class="question" id="mcq3">
+                        <p>3. En Python, ¿qué estructura de datos usarías principalmente para almacenar una colección ordenada de elementos que puede cambiar (añadir/quitar)?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3" value="a"> a) Tupla (Tuple)</label>
+                            <label><input type="radio" name="q3" value="b"> b) Lista (List)</label>
+                            <label><input type="radio" name="q3" value="c"> c) Conjunto (Set)</label>
+                            <label><input type="radio" name="q3" value="d"> d) Diccionario (Dictionary)</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkMCQ('q3', 'b', 'mcq3_feedback', '¡Exacto! Las listas son ordenadas y mutables (modificables).', 'Incorrecto. Piensa cuál estructura es ordenada y permite cambios.')">Verificar</button>
+                        <div class="feedback" id="mcq3_feedback"></div>
+                    </div>
+                     <div class="question" id="mcq4">
+                        <p>4. ¿Qué estructura de datos en Python es ideal para almacenar pares clave-valor?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q4" value="a"> a) Lista (List)</label>
+                            <label><input type="radio" name="q4" value="b"> b) Conjunto (Set)</label>
+                            <label><input type="radio" name="q4" value="c"> c) Tupla (Tuple)</label>
+                            <label><input type="radio" name="q4" value="d"> d) Diccionario (Dictionary)</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkMCQ('q4', 'd', 'mcq4_feedback', '¡Correcto! Los diccionarios usan claves para acceder a valores.', 'Incorrecto. Revisa qué estructura funciona como un "diccionario" real.')">Verificar</button>
+                        <div class="feedback" id="mcq4_feedback"></div>
+                    </div>
+                    <div class="question" id="mcq5">
+                        <p>5. La búsqueda lineal consiste en:</p>
+                        <div class="options">
+                            <label><input type="radio" name="q5" value="a"> a) Dividir la lista a la mitad repetidamente.</label>
+                            <label><input type="radio" name="q5" value="b"> b) Revisar cada elemento de la lista uno por uno hasta encontrar el buscado.</label>
+                            <label><input type="radio" name="q5" value="c"> c) Ordenar la lista primero y luego buscar.</label>
+                            <label><input type="radio" name="q5" value="d"> d) Usar una clave para acceder directamente al elemento.</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkMCQ('q5', 'b', 'mcq5_feedback', '¡Muy bien! La búsqueda lineal es secuencial, elemento por elemento.', 'Incorrecto. La búsqueda lineal es la más simple, ¿cómo procederías paso a paso?')">Verificar</button>
+                        <div class="feedback" id="mcq5_feedback"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>2. Verdadero o Falso</h4>
+                    <div class="question" id="tf1">
+                        <p>1. Un algoritmo siempre produce el mismo resultado para la misma entrada.</p>
+                        <div class="options">
+                            <label><input type="radio" name="tfq1" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tfq1" value="false"> Falso</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkTF('tfq1', 'true', 'tf1_feedback', '¡Correcto! Esta propiedad se llama determinismo.', 'Incorrecto. Un algoritmo bien definido debe ser determinista.')">Verificar</button>
+                        <div class="feedback" id="tf1_feedback"></div>
+                    </div>
+                    <div class="question" id="tf2">
+                        <p>2. Las listas en Python pueden contener elementos de diferentes tipos de datos (ej. números y texto).</p>
+                        <div class="options">
+                            <label><input type="radio" name="tfq2" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tfq2" value="false"> Falso</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkTF('tfq2', 'true', 'tf2_feedback', '¡Correcto! Las listas de Python son muy flexibles en cuanto a tipos.', 'Incorrecto. Las listas en Python sí permiten mezclar tipos de datos.')">Verificar</button>
+                        <div class="feedback" id="tf2_feedback"></div>
+                    </div>
+                     <div class="question" id="tf3">
+                        <p>3. Los conjuntos (Sets) en Python permiten elementos duplicados.</p>
+                        <div class="options">
+                            <label><input type="radio" name="tfq3" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tfq3" value="false"> Falso</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkTF('tfq3', 'false', 'tf3_feedback', '¡Correcto! Los conjuntos, por definición, solo almacenan elementos únicos.', 'Incorrecto. Recuerda la propiedad fundamental de los conjuntos matemáticos.')">Verificar</button>
+                        <div class="feedback" id="tf3_feedback"></div>
+                    </div>
+                     <div class="question" id="tf4">
+                        <p>4. Un diccionario en Python mantiene los elementos en el orden en que fueron insertados (en versiones recientes de Python).</p>
+                        <div class="options">
+                            <label><input type="radio" name="tfq4" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tfq4" value="false"> Falso</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkTF('tfq4', 'true', 'tf4_feedback', '¡Correcto! Desde Python 3.7+, los diccionarios recuerdan el orden de inserción.', 'Incorrecto. Aunque antes no era así, las versiones modernas de Python sí mantienen el orden en diccionarios.')">Verificar</button>
+                        <div class="feedback" id="tf4_feedback"></div>
+                    </div>
+                    <div class="question" id="tf5">
+                        <p>5. El pseudocódigo es un lenguaje de programación real que se puede ejecutar.</p>
+                        <div class="options">
+                            <label><input type="radio" name="tfq5" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tfq5" value="false"> Falso</label>
+                        </div>
+                        <button class="quiz-button" onclick="checkTF('tfq5', 'false', 'tf5_feedback', '¡Correcto! El pseudocódigo es una forma de describir algoritmos en lenguaje natural estructurado, no ejecutable.', 'Incorrecto. El pseudocódigo es una herramienta de diseño, no un lenguaje ejecutable.')">Verificar</button>
+                        <div class="feedback" id="tf5_feedback"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>3. Arrastrar y Soltar</h4>
+                    <div class="question" id="dd1">
+                        <p>Arrastra cada estructura de datos a su descripción principal:</p>
+                        <div class="drag-drop-container" id="dd-container1">
+                            <div class="draggable-items">
+                                <h5>Estructuras</h5>
+                                <div class="draggable" draggable="true" id="dd-item-list">Lista</div>
+                                <div class="draggable" draggable="true" id="dd-item-dict">Diccionario</div>
+                                <div class="draggable" draggable="true" id="dd-item-set">Conjunto</div>
+                            </div>
+                            <div class="drop-zones">
+                                <h5>Descripciones</h5>
+                                <div class="drop-zone" data-accepts="dd-item-list">Colección ordenada y mutable</div>
+                                <div class="drop-zone" data-accepts="dd-item-dict">Pares Clave-Valor</div>
+                                <div class="drop-zone" data-accepts="dd-item-set">Colección no ordenada de únicos</div>
+                            </div>
+                        </div>
+                        <button class="quiz-button" onclick="checkDragDrop('dd-container1', 'dd1_feedback', '¡Bien hecho! Has relacionado correctamente las estructuras.', 'Algunas relaciones son incorrectas. Revisa las definiciones.')">Verificar</button>
+                        <div class="feedback" id="dd1_feedback"></div>
+                    </div>
+                     <div class="question" id="dd2">
+                        <p>Arrastra cada característica a la estructura de datos que MEJOR la representa:</p>
+                        <div class="drag-drop-container" id="dd-container2">
+                            <div class="draggable-items">
+                                <h5>Características</h5>
+                                <div class="draggable" draggable="true" id="dd-item-mutable">Mutable (Modificable)</div>
+                                <div class="draggable" draggable="true" id="dd-item-unique">Elementos Únicos</div>
+                                <div class="draggable" draggable="true" id="dd-item-keyval">Acceso por Clave</div>
+                            </div>
+                            <div class="drop-zones">
+                                <h5>Estructuras (Ejemplos)</h5>
+                                <div class="drop-zone" data-accepts="dd-item-mutable">Lista</div>
+                                <div class="drop-zone" data-accepts="dd-item-keyval">Diccionario</div>
+                                <div class="drop-zone" data-accepts="dd-item-unique">Conjunto</div>
+                            </div>
+                        </div>
+                        <button class="quiz-button" onclick="checkDragDrop('dd-container2', 'dd2_feedback', '¡Excelente! Características bien asignadas.', 'Hay errores en la asignación. Piensa en la propiedad principal de cada estructura.')">Verificar</button>
+                        <div class="feedback" id="dd2_feedback"></div>
+                    </div>
+                </div>
+
+
+                <div class="quiz-section">
+                    <h4>4. Relacionar Columnas</h4>
+                    <div class="question" id="match1">
+                        <p>Relaciona el concepto con su definición seleccionando uno de cada columna:</p>
+                        <div class="matching-container" id="match-container1">
+                            <div class="column" id="match-col1-1">
+                                <h5>Concepto</h5>
+                                <div class="match-item" data-match-id="1">Algoritmo</div>
+                                <div class="match-item" data-match-id="2">Estructura de Datos</div>
+                                <div class="match-item" data-match-id="3">Búsqueda Lineal</div>
+                                <div class="match-item" data-match-id="4">Python</div>
+                            </div>
+                            <div class="column" id="match-col1-2">
+                                <h5>Definición</h5>
+                                <div class="match-item" data-match-id="4">Lenguaje de programación</div>
+                                <div class="match-item" data-match-id="1">Secuencia de pasos finitos</div>
+                                <div class="match-item" data-match-id="3">Revisar uno por uno</div>
+                                <div class="match-item" data-match-id="2">Forma de organizar datos</div>
+                            </div>
+                        </div>
+                        <button class="quiz-button" onclick="checkMatching('match-container1', 'match1_feedback', '¡Perfecto! Todas las relaciones son correctas.', 'Hay errores en las relaciones. Intenta de nuevo.')">Verificar</button>
+                        <div class="feedback" id="match1_feedback"></div>
+                    </div>
+                     <div class="question" id="match2">
+                        <p>Relaciona la estructura de Python con un caso de uso típico:</p>
+                        <div class="matching-container" id="match-container2">
+                            <div class="column" id="match-col2-1">
+                                <h5>Estructura Python</h5>
+                                <div class="match-item" data-match-id="a">Lista (List)</div>
+                                <div class="match-item" data-match-id="b">Diccionario (Dict)</div>
+                                <div class="match-item" data-match-id="c">Conjunto (Set)</div>
+                                <div class="match-item" data-match-id="d">Tupla (Tuple)</div>
+                            </div>
+                            <div class="column" id="match-col2-2">
+                                <h5>Caso de Uso</h5>
+                                <div class="match-item" data-match-id="b">Guardar configuraciones (nombre: valor)</div>
+                                <div class="match-item" data-match-id="d">Coordenadas (x, y) inmutables</div>
+                                <div class="match-item" data-match-id="a">Almacenar pasos de un proceso en orden</div>
+                                <div class="match-item" data-match-id="c">Verificar rápidamente si un usuario ya existe</div>
+                            </div>
+                        </div>
+                        <button class="quiz-button" onclick="checkMatching('match-container2', 'match2_feedback', '¡Muy bien! Has relacionado los usos correctamente.', 'Algunas relaciones no son las más adecuadas. Revisa los casos de uso.')">Verificar</button>
+                        <div class="feedback" id="match2_feedback"></div>
+                    </div>
+                </div>
+
+                 <div class="quiz-section educaplay-container">
+                     <h4>5. Crucigrama Interactivo (Educaplay)</h4>
+                     <p>Completa este crucigrama para repasar conceptos básicos de Python:</p>
+                     <iframe style="max-width:100%;height:600px;" src="https://es.educaplay.com/recursos-educativos/18897078-introduccion_a_python.html" frameborder="0"></iframe>
+                     <p><small>(Este es un recurso externo. La puntuación aquí no afecta el quiz de la WebQuest).</small></p>
+                 </div>
+
+            </section>
+        </main>
+
+        <footer>
+            <p>WebQuest diseñada como recurso educativo para 5° Año de Secundaria.</p>
+            <p>Basado en la metodología WebQuest y adaptado al currículo.</p>
+        </footer>
+
+    </div> <script>
+        // --- JavaScript para la Navegación por Pestañas ---
+        function showTab(tabId) {
+            // Ocultar todo el contenido de las pestañas
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+                content.classList.remove('active');
+            });
+
+            // Quitar la clase 'active' de todos los botones
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Mostrar la pestaña seleccionada
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+                // Forzar reflow para reiniciar la animación
+                void selectedTab.offsetWidth;
+                selectedTab.classList.add('active');
+            }
+
+            // Añadir la clase 'active' al botón presionado
+            // Busca el botón que corresponde al tabId
+             const correspondingButton = Array.from(tabButtons).find(button => button.getAttribute('onclick') === `showTab('${tabId}')`);
+             if (correspondingButton) {
+                correspondingButton.classList.add('active');
+             }
+        }
+
+        // Mostrar la primera pestaña por defecto al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('introduccion');
+            initializeDragDrop();
+            initializeMatching();
+        });
+
+        // --- JavaScript para el Quiz Interactivo ---
+
+        // Función para verificar Selección Múltiple
+        function checkMCQ(questionName, correctAnswer, feedbackId, correctMsg, incorrectMsg) {
+            const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+            const feedbackElement = document.getElementById(feedbackId);
+            const questionDiv = document.getElementById(questionName + 'q'); // Asumiendo que el div tiene id como 'mcq1q'
+
+            if (!selectedOption) {
+                feedbackElement.textContent = "Por favor, selecciona una opción.";
+                feedbackElement.className = 'feedback incorrect'; // Usar clase incorrecta para mensaje de error
+                feedbackElement.style.display = 'block';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswer) {
+                feedbackElement.textContent = correctMsg;
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.textContent = incorrectMsg;
+                feedbackElement.className = 'feedback incorrect';
+            }
+            feedbackElement.style.display = 'block';
+
+             // Deshabilitar botones después de verificar
+            const button = feedbackElement.previousElementSibling; // El botón está antes del feedback div
+            if(button && button.tagName === 'BUTTON'){
+                 button.disabled = true;
+                 button.style.opacity = '0.6';
+                 button.style.cursor = 'not-allowed';
+            }
+             // Deshabilitar radios
+            const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+            radioButtons.forEach(radio => radio.disabled = true);
+        }
+
+        // Función para verificar Verdadero/Falso
+        function checkTF(questionName, correctAnswer, feedbackId, correctMsg, incorrectMsg) {
+             // Es la misma lógica que MCQ, así que reutilizamos la función
+             checkMCQ(questionName, correctAnswer, feedbackId, correctMsg, incorrectMsg);
+        }
+
+
+        // --- JavaScript para Arrastrar y Soltar (Drag and Drop) ---
+        let draggedItem = null;
+
+        function initializeDragDrop() {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => e.target.style.display = 'none', 0); // Ocultar el original mientras se arrastra
+                });
+
+                draggable.addEventListener('dragend', (e) => {
+                    setTimeout(() => {
+                         // Si no se soltó en una zona válida, devolverlo a su origen
+                        if (draggedItem && draggedItem.parentNode.classList.contains('draggable-items')) {
+                             draggedItem.style.display = 'block';
+                        }
+                        draggedItem = null;
+                    }, 0);
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault(); // Necesario para permitir soltar
+                    zone.classList.add('over');
+                });
+
+                zone.addEventListener('dragleave', (e) => {
+                    zone.classList.remove('over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('over');
+
+                    // Solo permitir soltar si la zona está vacía o si devolvemos el item actual
+                    if (draggedItem && zone.children.length === 0) { // Solo permitir un item por zona
+                         // Devolver el item anterior a la lista original si existe
+                        const previousItem = zone.querySelector('.draggable');
+                        if (previousItem) {
+                            const originalContainer = document.querySelector(`#${previousItem.id.split('-')[0]}-${previousItem.id.split('-')[1]}-container .draggable-items`); // Encuentra el contenedor original
+                            if (originalContainer) {
+                                originalContainer.appendChild(previousItem);
+                                previousItem.style.display = 'block'; // Asegurarse que sea visible
+                            }
+                        }
+
+                        zone.appendChild(draggedItem);
+                        draggedItem.style.display = 'block'; // Asegurar que el item soltado sea visible
+                        // draggedItem = null; // Ya no lo necesitamos aquí por el dragend
+                    } else if (draggedItem && zone.children.length > 0) {
+                         // Si la zona ya tiene un item, no hacer nada o intercambiar (más complejo)
+                         // Por simplicidad, no permitimos soltar si ya hay algo.
+                         // El dragend devolverá el item arrastrado a su origen.
+                         console.log("Zona ocupada");
+                    }
+                });
+            });
+        }
+
+        function checkDragDrop(containerId, feedbackId, correctMsg, incorrectMsg) {
+            const container = document.getElementById(containerId);
+            const dropZones = container.querySelectorAll('.drop-zone');
+            const feedbackElement = document.getElementById(feedbackId);
+            let allCorrect = true;
+
+            dropZones.forEach(zone => {
+                const droppedItem = zone.querySelector('.draggable');
+                const expectedItemId = zone.getAttribute('data-accepts');
+
+                if (!droppedItem || droppedItem.id !== expectedItemId) {
+                    allCorrect = false;
+                    zone.style.border = '2px solid #e53e3e'; // Borde rojo para incorrecto
+                } else {
+                    zone.style.border = '2px solid #48bb78'; // Borde verde para correcto
+                }
+            });
+
+            if (allCorrect) {
+                feedbackElement.textContent = correctMsg;
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.textContent = incorrectMsg;
+                feedbackElement.className = 'feedback incorrect';
+            }
+            feedbackElement.style.display = 'block';
+
+             // Deshabilitar botón y drag/drop
+            const button = feedbackElement.previousElementSibling;
+             if(button && button.tagName === 'BUTTON'){
+                 button.disabled = true;
+                 button.style.opacity = '0.6';
+                 button.style.cursor = 'not-allowed';
+            }
+            const draggables = container.querySelectorAll('.draggable');
+            draggables.forEach(d => d.setAttribute('draggable', 'false')); // No se puede arrastrar más
+            // Quitar listeners de drop zones para evitar más interacciones
+            container.querySelectorAll('.drop-zone').forEach(dz => {
+                dz.removeEventListener('dragover', (e) => e.preventDefault());
+                dz.removeEventListener('dragleave', (e) => e.target.classList.remove('over'));
+                dz.removeEventListener('drop', (e) => e.preventDefault());
+                dz.classList.remove('over'); // Limpiar estado visual
+            });
+        }
+
+
+        // --- JavaScript para Relacionar Columnas ---
+        let selectedItem = null;
+
+        function initializeMatching() {
+            const matchItems = document.querySelectorAll('.match-item');
+
+            matchItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const currentItem = e.target.closest('.match-item'); // Asegura que se selecciona el item correcto
+                    const currentColumn = currentItem.closest('.column');
+
+                    // Si ya hay un item seleccionado en la OTRA columna
+                    if (selectedItem && selectedItem.closest('.column') !== currentColumn) {
+                        // Marcar ambos como relacionados (visualmente o guardando la relación)
+                        // Aquí solo haremos un efecto visual simple y guardaremos la selección para verificar
+                        currentItem.classList.add('matched'); // Clase temporal para indicar pareja
+                        selectedItem.classList.add('matched');
+                        currentItem.setAttribute('data-linked-to', selectedItem.getAttribute('data-match-id'));
+                        selectedItem.setAttribute('data-linked-to', currentItem.getAttribute('data-match-id'));
+
+                        // Limpiar selección
+                        selectedItem.classList.remove('selected');
+                        selectedItem = null;
+
+                    } else {
+                        // Deseleccionar cualquier otro item en la MISMA columna
+                        currentColumn.querySelectorAll('.match-item').forEach(i => i.classList.remove('selected'));
+                        // Seleccionar el item actual
+                        currentItem.classList.add('selected');
+                        selectedItem = currentItem;
+
+                         // Si había un item seleccionado previamente en esta columna, quitarle el 'selected'
+                         if (selectedItem && selectedItem !== currentItem) {
+                             selectedItem.classList.remove('selected');
+                         }
+                         selectedItem = currentItem; // Actualizar el item seleccionado
+                    }
+                });
+            });
+        }
+
+        function checkMatching(containerId, feedbackId, correctMsg, incorrectMsg) {
+            const container = document.getElementById(containerId);
+            const columns = container.querySelectorAll('.column');
+            const feedbackElement = document.getElementById(feedbackId);
+            let allCorrect = true;
+            let pairsFound = 0;
+
+            if (columns.length !== 2) return; // Necesita dos columnas
+
+            const itemsCol1 = columns[0].querySelectorAll('.match-item');
+            const itemsCol2 = columns[1].querySelectorAll('.match-item');
+
+             if (itemsCol1.length !== itemsCol2.length) {
+                 console.error("Las columnas de relación no tienen el mismo número de items.");
+                 return;
+             }
+
+            itemsCol1.forEach(item1 => {
+                const matchId1 = item1.getAttribute('data-match-id');
+                const linkedId = item1.getAttribute('data-linked-to'); // El ID del item en la otra columna al que se vinculó
+
+                item1.style.border = '1px solid #e2e8f0'; // Reset border
+
+                if (linkedId) {
+                    pairsFound++;
+                    if (linkedId === matchId1) { // Comprueba si el ID vinculado es el mismo que el propio ID (correcto)
+                        item1.style.border = '2px solid #48bb78'; // Verde
+                         // Encontrar el item correspondiente en la otra columna y marcarlo también
+                        const correspondingItem = columns[1].querySelector(`.match-item[data-match-id="${linkedId}"]`);
+                        if(correspondingItem) correspondingItem.style.border = '2px solid #48bb78';
+                    } else {
+                        allCorrect = false;
+                        item1.style.border = '2px solid #e53e3e'; // Rojo
+                         const correspondingItem = columns[1].querySelector(`.match-item[data-match-id="${linkedId}"]`);
+                        if(correspondingItem) correspondingItem.style.border = '2px solid #e53e3e';
+                    }
+                } else {
+                    allCorrect = false; // Si falta alguna relación
+                }
+            });
+
+             // Verificar que se hayan hecho todas las relaciones necesarias
+             if (pairsFound !== itemsCol1.length) {
+                 allCorrect = false;
+             }
+
+
+            if (allCorrect) {
+                feedbackElement.textContent = correctMsg;
+                feedbackElement.className = 'feedback correct';
+            } else {
+                 if (pairsFound !== itemsCol1.length) {
+                     feedbackElement.textContent = "Faltan relaciones por hacer.";
+                 } else {
+                    feedbackElement.textContent = incorrectMsg;
+                 }
+                feedbackElement.className = 'feedback incorrect';
+            }
+            feedbackElement.style.display = 'block';
+
+             // Deshabilitar botón y clicks
+            const button = feedbackElement.previousElementSibling;
+             if(button && button.tagName === 'BUTTON'){
+                 button.disabled = true;
+                 button.style.opacity = '0.6';
+                 button.style.cursor = 'not-allowed';
+            }
+            container.querySelectorAll('.match-item').forEach(item => {
+                item.style.pointerEvents = 'none'; // Deshabilita clicks futuros
+                item.classList.remove('selected'); // Limpia selección visual
+            });
+        }
+
+    </script>
+
+</body>
+</html>
